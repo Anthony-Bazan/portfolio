@@ -30,7 +30,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// 
+//home
 Route::get('/home', [homeController::class, 'index'])->name('home.index');
 
 // admin

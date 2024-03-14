@@ -583,30 +583,6 @@ header.sticky .nav-bar{
     
 }
 
-.bar .html:before{
-    width: 95%;
-}
-
-.bar .css:before{
-    width: 80%;
-}
-
-.bar .javascript:before{
-    width: 75%;
-}
-
-.bar .jquery:before{
-    width: 65%;
-}
-
-.bar .php:before{
-    width: 96%;
-}
-
-.bar .mysql:before{
-    width: 98%;
-}
-
 .experience-card{
     background: var(--card-bg-color);
     border-bottom: 3px solid var(--second-color);

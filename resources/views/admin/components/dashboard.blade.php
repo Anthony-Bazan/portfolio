@@ -86,7 +86,8 @@
                     </button>
                 </form>
                     @endforeach
-
+                
+                    <a href="{{route('home.index')}}" target="{{route('home.index')}}" class="btn btn-success">View my Website</a>
                   
                    
                 </div>
