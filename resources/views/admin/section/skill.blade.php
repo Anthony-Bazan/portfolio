@@ -28,20 +28,22 @@
                             <thead>
                                 <tr>
                                     <th >Education Level</th>
-                                    <th >School</th>
+                                    <th >Percent</th>
                                     <th style="text-align: center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                              @foreach ($skill as $item )
+    
                                 <tr>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{$item->title}}</td>
+                                    <td>{{$item->description}}</td>
                                     <td style="text-align: center">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit"><i class="uil uil-edit"></i></button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ $item->id}}" data-title="{{ $item->title }}" data-description="{{ $item->description }}"><i class="uil uil-edit"></i></button>
                                         <button><i class="uil uil-trash-alt"></i></button>
                                     </td>
                                 </tr>
-                                
+                                @endforeach
                                  
                             </tbody>
                         </table>
@@ -59,51 +61,88 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <form action="{{route('skill.add')}}" method="post" >
+            @csrf
+            @method('post')
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="">
+                <input type="text" class="form-control" id="floatingInput" name="title" placeholder="">
                 <label for="floatingInput">Title:</label>
               </div> 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="">
+                <input type="text" class="form-control" id="floatingInput" name="description" placeholder="">
                 <label for="floatingInput">Percent:</label>
               </div> 
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
+      </form>
       </div>
     </div>
   </div>
 
     <!-- Modal edit-->
-    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editModalLabel">Update Skill</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="">
-                    <label for="floatingInput">Title:</label>
-                  </div> 
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="">
-                    <label for="floatingInput">Percent:</label>
-                  </div> 
-                 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+              <div class="modal-header">
+                  <h5 class="modal-title" id="updateModalLabel">Update Skill</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form action="{{ route('skill.update', ['id'=> '__ID__'])}}" method="post" id="updateForm">
+                  @csrf
+                  @method('put')
+                  <div class="modal-body">
+                      <input type="hidden" name="id" id="updateId">
+                      <div class="mb-3">
+                          <label for="name" class="form-label">Edulevel:</label>
+                          <input type="text" class="form-control" id="title" name="title" >
+                      </div>
+                     
+                    <div class="mb-3">
+                      <label for="name" class="form-label">End:</label>
+                      <input type="text" class="form-control" id="description" name="description">
+                  </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+              </form>
           </div>
-        </div>
       </div>
+  </div>
   
-               
+      <script>
+        function setFormAction(id) {
+            var form = document.getElementById('updateForm');
+            var action = form.getAttribute('action');
+            // Replace '__ID__' in the action attribute with the actual id value
+            form.setAttribute('action', action.replace('__ID__', id));
+        }
+    
+        // Call the setFormAction function when the modal is shown
+        var myModal = document.getElementById('updateModal');
+        
+        myModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            // Set the value of the hidden input field to the id
+            document.getElementById('updateId').value = id;
+            // Call the setFormAction function to update the form action
+            setFormAction(id);
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var title = button.getAttribute('data-title');
+            var description = button.getAttribute('data-description');
+           
+    
+            document.getElementById('updateId').value = id;
+            document.getElementById('title').value = title;
+            document.getElementById('description').value = description;
+        });
+    </script>              
                
             </div>
             <a href="#" class="theme-toggle">
